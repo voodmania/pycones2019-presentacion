@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<title>Microservicios altamente paralelos para todos</title>
+
+		<meta name="description" content="Creación de microservicios asíncronos usando el framework Starlette">
+		<meta name="author" content="Alberto Fernandéz Valiente">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background-image="img/ayesa.png" data-background-size="15%" data-background-position="75% 90%">
+					<h2>Microservicios altamente paralelos para todos</h2>
+					<h4 class="fragment">Como montar un servidor asíncrono con Starlette</h4>
+					<p>
+						<small>Por Alberto Fernández Valiente</small>
+					</p>
+				</section>
+
+        <section>
+          <h4><span style="text-decoration: underline;">Microservicios</span> altamente paralelos para todos</h4>
+          <ul class="fragment">
+            <li>Django vs Flask</li>
+            <li class="fragment">API con una única responsabilidad</li>
+            <li class="fragment">Solo dependencias indispensables</li>
+            <li class="fragment">Desplegables independientemente</li>
+          </ul>
+				</section>
+        
+        <section>
+          <h4>Microservicios <span style="text-decoration: underline;">altamente paralelos</span> para todos</h4>
+          <ul class="fragment">
+            <li>Muchas peticiones a la vez</li>
+            <li class="fragment">Latencia de las respuestas</li>
+            <li class="fragment">Escalabilidad y ráfagas de peticiones</li>
+          </ul>
+				</section>
+
+        <section>
+          <h4>Microservicios altamente paralelos <span style="text-decoration: underline;">para todos</span></h4>
+          <ul class="fragment">
+            <li>Vigilar los costes de infraestructura</li>
+            <li class="fragment">Complejidad de la infraestructura</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>AsyncIO</h1>
+          <img class="fragment" src="img/magic.gif">
+        </section>
+        
+        <section>
+          <h2>asyncio vs threading</h2>
+          <ul class="fragment">
+            <li>Corrutinas vs hilos</li>
+            <li class="fragment">Gestión de la ejecución</li>
+            <li class="fragment">Cuellos de botella</li>
+            <li class="fragment">Primitivas de sincronización</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h1>Starlette</h1>
+          <ul>
+            <li>Framework ligero para servicios asíncronos</li>
+            <li>Alto rendimiento en producción</li>
+            <li>Diseño modular con componentes reusables</li>
+            <li>Soporta WebSocket</li>
+            <li>Código 100% anotado con tipado</li>
+            <li>Usable sin dependencias externas</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Ejemplo básico</h2>
+          <pre><code data-trim data-noescape>
+import uvicorn
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+
+app = Starlette(debug=True)
+
+@app.route('/')
+async def homepage(request):
+    return JSONResponse({'hello': 'world'})
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)
+          </code></pre>
+        </section>
+
+        <section>
+          <h1>Uvicorn</h1>
+          <pre><code data-trim data-noescape>
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)
+          </code></pre>
+          <ul>
+            <li>Servidor ASGI(Asynchronous Server Gateway Interface)</li>
+            <li>Compatible con WSGI</li>
+            <li>Basado en uvloop y httptools</li>
+            <li>Soporta HTTP/1 y WebSockets</li>
+          </ul>
+        </section>
+  
+        <section>
+          <h1>Applications</h1>
+          <pre><code data-trim data-noescape>
+from starlette.applications import Starlette
+
+app = Starlette(debug=True)
+          </code></pre>
+          <ul>
+            <li>Enrutamiento</li>
+            <li>Eventos</li>
+            <li>Montar aplicaciones ASGI</li>
+            <li>Manejo de excepciones</li>
+            <li>Gestionar el estado común</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Enrutamiento simple</h1>
+          <pre><code data-trim data-noescape>
+@app.route('/')
+async def homepage(request):
+    return JSONResponse({'hello': 'world'})
+          </code></pre>
+          <p>Se usa un decorador sobre una función asíncrona que solo tiene un único parámetro de entrada, la petición del cliente.</p>
+        </section>
+
+        <section>
+          <h1>Request</h1>
+          <pre><code data-trim data-noescape>
+@app.route('/')
+async def homepage(request):
+    return JSONResponse({'hello': 'world'})
+          </code></pre>
+          <ul>
+            <li>Método, parametros y URL de la petición</li>
+            <li>Cabeceras y cookies</li>
+            <li>Cuerpo de la petición: formulario, JSON o datos binarios</li>
+            <li>Ficheros enviados en la petición</li>
+            <li>Estado asociado</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Response</h1>
+          <pre>Response(content, status_code=200, headers=None, media_type=None)</pre>
+          <ul>
+            <li>Permite asignar y borrar Cookies</li>
+            <li>PlainTextResponse, HTMLResponse, JSONResponse</li>
+            <li>RedirectResponse</li>
+            <li>StreamingResponse</li>
+            <li>FileResponse</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Enrutamiento avanzado</h2>
+          <pre><code data-trim data-noescape>
+from starlette.routing import Router, Route, Mount
+
+app.mount('', Router([
+    Route('/', endpoint=Homepage, methods=['GET']),
+    Mount('/users', app=Router([
+        Route('/', endpoint=Users, methods=['GET', 'POST']),
+        Route('/{username}', endpoint=User, methods=['GET']),
+    ]))
+]))
+          </code></pre>
+          <p>Router es una aplicación ASGI que se encarga de enviar las peticiones entrantes a los endpoints o aplicaciones anidadas correspondientes.</p>
+        </section>
+
+        <section>
+          <h1>Endpoint</h1>
+        </section>
+
+        <section>
+          <h1>Middleware</h1>
+        </section>
+
+        <section>
+          <h2>Gestión de recursos externos</h2>
+        </section>
+        
+        <section>
+          <h1>Plantillas</h1>
+        </section>
+        
+        <section>
+          <h1>Eventos</h1>
+          <pre><code data-trim data-noescape>
+@app.on_event('startup')
+async def setup_pool():
+    await RedisPool.initialize()
+
+@app.on_event('shutdown')
+async def teardown_pool():
+    if RedisPool.pool:
+        RedisPool.pool.close()
+          </code></pre>
+        </section>
+
+        <section>
+        </section>
+
+        <section>
+        </section>
+
+        <section>
+          <h1>Puesta en producción</h1>
+          <ul>
+            <li>Circus + Uvicorn</li>
+            <li>Nginx + Supervisor + Gunicorn con UvicornWorker</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Frameworks basados en Starlette</h1>
+          <ul>
+            <li><a href="https://fastapi.tiangolo.com/">FastAPI</a></li>
+            <li><a href="https://python-responder.org/en/latest/">Responder</a></li>
+            <li><a href="https://bocadilloproject.github.io/">Bocadillo</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Referencias</h1>
+          <ul>
+            <li><a href="https://www.starlette.io/">Documentación Starlette</a></li>
+            <li><a href="https://docs.python.org/3/library/asyncio.html">Librería asyncio</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Gracias a todos</h1>
+          <p>Código de la aplicación de ejemplo disponible en <a href="https://github.com/voodmania/pycones2019-demo">Github</a></p>
+        </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
