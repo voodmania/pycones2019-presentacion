@@ -71,7 +71,7 @@
         </section>
 
         <section>
-          <h1>AsyncIO</h1>
+          <h2>AsyncIO</h2>
           <img class="fragment" src="img/magic.gif">
         </section>
         
@@ -86,7 +86,7 @@
         </section>
         
         <section>
-          <h1>Starlette</h1>
+          <h2>Starlette</h2>
           <ul>
             <li>Framework ligero para servicios asíncronos</li>
             <li>Alto rendimiento en producción</li>
@@ -116,7 +116,7 @@ if __name__ == '__main__':
         </section>
 
         <section>
-          <h1>Uvicorn</h1>
+          <h2>Uvicorn</h2>
           <pre><code data-trim data-noescape>
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8000)
@@ -130,7 +130,7 @@ if __name__ == '__main__':
         </section>
   
         <section>
-          <h1>Applications</h1>
+          <h2>Applications</h2>
           <pre><code data-trim data-noescape>
 from starlette.applications import Starlette
 
@@ -146,7 +146,7 @@ app = Starlette(debug=True)
         </section>
 
         <section>
-          <h1>Enrutamiento simple</h1>
+          <h2>Enrutamiento simple</h2>
           <pre><code data-trim data-noescape>
 @app.route('/')
 async def homepage(request):
@@ -156,7 +156,7 @@ async def homepage(request):
         </section>
 
         <section>
-          <h1>Request</h1>
+          <h2>Request</h2>
           <pre><code data-trim data-noescape>
 @app.route('/')
 async def homepage(request):
@@ -172,7 +172,7 @@ async def homepage(request):
         </section>
 
         <section>
-          <h1>Response</h1>
+          <h2>Response</h2>
           <pre>Response(content, status_code=200, headers=None, media_type=None)</pre>
           <ul>
             <li>Permite asignar y borrar Cookies</li>
@@ -200,43 +200,99 @@ app.mount('', Router([
         </section>
 
         <section>
-          <h1>Endpoint</h1>
+          <h2>Endpoints</h2>
+          <pre><code data-trim data-noescape>
+from starlette.endpoints import HTTPEndpoint
+
+class CustomEndpoint(HTTPEndpoint):
+    async def dispatch(self):
+        request = Request(self.scope, receive=self.receive)
+        handler = getattr(self, request.method.lower())
+        response = await handler(request)
+        await response(self.scope, self.receive, self.send)
+          </code></pre>
+          <p>Permiten crear vistas basadas en clases.</p>
+          <p>HTTPEndpoint se utiliza para para peticiones HTTP y WebSocketEndpoint para sesiones WebSocket.</p>
         </section>
 
         <section>
-          <h1>Middleware</h1>
+          <h2>Middleware</h2>
+          <pre><code data-trim data-noescape>
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class SessionMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        return response
+
+app.add_middleware(SessionMiddleware)
+          </code></pre>
+          <p>Clases usadas para añadir un comportamiento que será aplicado en toda la aplicación.</p>
+          <p>Se incluyen: CORSMiddleware, SessionMiddleware, HTTPSRedirectMiddleware, TrustedHostMiddleware, GZipMiddleware.</p>
         </section>
 
         <section>
-          <h2>Gestión de recursos externos</h2>
+          <h2>Plantillas</h2>
+          <pre><code data-trim data-noescape>
+from starlette.templating import Jinja2Templates
+
+templates = Jinja2Templates(directory='templates')
+
+@app.route('/')
+async def homepage(request):
+    context = {'request': request}
+    return templates.TemplateResponse('index.html', context)
+          </code></pre>
+          <p>No hay ningún motor de plantillas predeterminado, aunque se proporciona un mecanismo sencillo para usar Jinja2.</p>
         </section>
         
         <section>
-          <h1>Plantillas</h1>
-        </section>
-        
-        <section>
-          <h1>Eventos</h1>
+          <h2>Eventos</h2>
           <pre><code data-trim data-noescape>
 @app.on_event('startup')
 async def setup_pool():
     await RedisPool.initialize()
 
-@app.on_event('shutdown')
 async def teardown_pool():
     if RedisPool.pool:
         RedisPool.pool.close()
+
+app.add_event_handler('shutdown', teardown_pool)
           </code></pre>
+          <p>Permite registrar código que se ejecutará antes de que la aplicación arranque o cuando se cierre.</p>
         </section>
 
         <section>
+          <h2>Tareas en segundo plano</h2>
+          <pre><code data-trim data-noescape>
+from starlette.background import BackgroundTask
+
+async def send_welcome_email(to_address):
+    pass
+
+@app.route('/user/signup', methods=['POST'])
+async def signup(request):
+    task = BackgroundTask(send_welcome_email, to_address=email)
+    message = {'status': 'Signup successful'}
+    return JSONResponse(message, background=task)
+          </code></pre>
+          <p>Permite crear tareas que se ejecutarán una vez se haya mandado la respuesta de la petición.</p>
         </section>
 
         <section>
+          <h2>Otros detalles</h2>
+          <ul>
+            <li>Configuración por variables de entorno</li>
+            <li>Integración con bases de datos</li>
+            <li>GraphQL</li>
+            <li>Autenticación</li>
+            <li>Generación de esquemas OpenAPI</li>
+            <li>Soporte de server push en HTTP/2 y HTTP/3</li>
+          </ul>
         </section>
 
         <section>
-          <h1>Puesta en producción</h1>
+          <h2>Puesta en producción</h2>
           <ul>
             <li>Circus + Uvicorn</li>
             <li>Nginx + Supervisor + Gunicorn con UvicornWorker</li>
@@ -244,7 +300,7 @@ async def teardown_pool():
         </section>
 
         <section>
-          <h1>Frameworks basados en Starlette</h1>
+          <h2>Frameworks basados en Starlette</h2>
           <ul>
             <li><a href="https://fastapi.tiangolo.com/">FastAPI</a></li>
             <li><a href="https://python-responder.org/en/latest/">Responder</a></li>
@@ -253,7 +309,7 @@ async def teardown_pool():
         </section>
 
         <section>
-          <h1>Referencias</h1>
+          <h2>Referencias</h2>
           <ul>
             <li><a href="https://www.starlette.io/">Documentación Starlette</a></li>
             <li><a href="https://docs.python.org/3/library/asyncio.html">Librería asyncio</a></li>
