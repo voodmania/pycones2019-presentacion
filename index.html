@@ -37,7 +37,7 @@
 			<div class="slides">
 				<section data-background-image="img/ayesa.png" data-background-size="15%" data-background-position="75% 90%">
 					<h2>Microservicios altamente paralelos para todos</h2>
-					<h4 class="fragment">Como montar un servidor asíncrono con Starlette</h4>
+					<h4 class="fragment">Cómo montar un servidor web asíncrono con Starlette</h4>
 					<p>
 						<small>Por Alberto Fernández Valiente</small>
 					</p>
@@ -45,28 +45,28 @@
 
         <section>
           <h4><span style="text-decoration: underline;">Microservicios</span> altamente paralelos para todos</h4>
-          <ul class="fragment">
+          <ul>
             <li>Django vs Flask</li>
-            <li class="fragment">API con una única responsabilidad</li>
-            <li class="fragment">Solo dependencias indispensables</li>
-            <li class="fragment">Desplegables independientemente</li>
+            <li>API con una única responsabilidad</li>
+            <li>Solo dependencias indispensables</li>
+            <li>Desplegables independientemente</li>
           </ul>
 				</section>
         
         <section>
           <h4>Microservicios <span style="text-decoration: underline;">altamente paralelos</span> para todos</h4>
-          <ul class="fragment">
+          <ul>
             <li>Muchas peticiones a la vez</li>
-            <li class="fragment">Latencia de las respuestas</li>
-            <li class="fragment">Escalabilidad y ráfagas de peticiones</li>
+            <li>Latencia de las respuestas</li>
+            <li>Escalabilidad y ráfagas de peticiones</li>
           </ul>
 				</section>
 
         <section>
           <h4>Microservicios altamente paralelos <span style="text-decoration: underline;">para todos</span></h4>
-          <ul class="fragment">
-            <li>Vigilar los costes de infraestructura</li>
-            <li class="fragment">Complejidad de la infraestructura</li>
+          <ul>
+            <li>Costes controlados</li>
+            <li>Infraestructura sencilla</li>
           </ul>
         </section>
 
@@ -77,22 +77,22 @@
         
         <section>
           <h2>asyncio vs threading</h2>
-          <ul class="fragment">
+          <ul>
             <li>Corrutinas vs hilos</li>
-            <li class="fragment">Gestión de la ejecución</li>
-            <li class="fragment">Cuellos de botella</li>
-            <li class="fragment">Primitivas de sincronización</li>
+            <li>Gestión de la ejecución</li>
+            <li>Cuellos de botella</li>
+            <li>Primitivas de sincronización</li>
           </ul>
         </section>
         
         <section>
           <h2>Starlette</h2>
           <ul>
-            <li>Framework ligero para servicios asíncronos</li>
+            <li>Framework ligero para crear servicios web asíncronos</li>
             <li>Alto rendimiento en producción</li>
             <li>Diseño modular con componentes reusables</li>
             <li>Soporta WebSocket</li>
-            <li>Código 100% anotado con tipado</li>
+            <li>Código 100% con anotaciones de tipado</li>
             <li>Usable sin dependencias externas</li>
           </ul>
         </section>
@@ -196,7 +196,7 @@ app.mount('', Router([
     ]))
 ]))
           </code></pre>
-          <p>Router es una aplicación ASGI que se encarga de enviar las peticiones entrantes a los endpoints o aplicaciones anidadas correspondientes.</p>
+          <p>Router es una aplicación ASGI que se encarga de enviar las peticiones entrantes a los endpoints o aplicaciones ASGI anidadas correspondientes.</p>
         </section>
 
         <section>
@@ -276,7 +276,7 @@ async def signup(request):
     message = {'status': 'Signup successful'}
     return JSONResponse(message, background=task)
           </code></pre>
-          <p>Permite crear tareas que se ejecutarán una vez se haya mandado la respuesta de la petición.</p>
+          <p>Permite crear tareas que se ejecutarán una vez se haya mandado la respuesta al cliente.</p>
         </section>
 
         <section>
@@ -302,23 +302,23 @@ async def signup(request):
         <section>
           <h2>Frameworks basados en Starlette</h2>
           <ul>
-            <li><a href="https://fastapi.tiangolo.com/">FastAPI</a></li>
-            <li><a href="https://python-responder.org/en/latest/">Responder</a></li>
-            <li><a href="https://bocadilloproject.github.io/">Bocadillo</a></li>
+            <li><a target="_blank" href="https://fastapi.tiangolo.com/">FastAPI</a></li>
+            <li><a target="_blank" href="http://responder.kennethreitz.org/">Responder</a></li>
+            <li><a target="_blank" href="https://bocadilloproject.github.io/">Bocadillo</a></li>
           </ul>
         </section>
 
         <section>
           <h2>Referencias</h2>
           <ul>
-            <li><a href="https://www.starlette.io/">Documentación Starlette</a></li>
-            <li><a href="https://docs.python.org/3/library/asyncio.html">Librería asyncio</a></li>
+            <li><a target="_blank" href="https://www.starlette.io/">Documentación Starlette</a></li>
+            <li><a target="_blank" href="https://docs.python.org/3/library/asyncio.html">Librería asyncio</a></li>
           </ul>
         </section>
 
         <section>
           <h1>Gracias a todos</h1>
-          <p>Código de la aplicación de ejemplo disponible en <a href="https://github.com/voodmania/pycones2019-demo">Github</a></p>
+          <p>Código de la aplicación de ejemplo disponible en <a target="_blank" href="https://github.com/voodmania/pycones2019-demo">Github</a></p>
         </section>
 			</div>
 		</div>
