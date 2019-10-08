@@ -141,7 +141,7 @@ app = Starlette(debug=True)
             <li>Eventos</li>
             <li>Montar aplicaciones ASGI</li>
             <li>Manejo de excepciones</li>
-            <li>Gestionar el estado común</li>
+            <li>Gestión del estado común</li>
           </ul>
         </section>
 
@@ -173,7 +173,7 @@ async def homepage(request):
 
         <section>
           <h2>Response</h2>
-          <pre>Response(content, status_code=200, headers=None, media_type=None)</pre>
+          <pre><code data-trim data-noescape>Response(content, status_code, headers, media_type)</code></pre>
           <ul>
             <li>Permite asignar y borrar Cookies</li>
             <li>PlainTextResponse, HTMLResponse, JSONResponse</li>
@@ -318,7 +318,7 @@ async def signup(request):
 
         <section>
           <h1>Gracias a todos</h1>
-          <p>Código de la aplicación de ejemplo disponible en <a target="_blank" href="https://github.com/voodmania/pycones2019-demo">Github</a></p>
+          <p>Código de la aplicación de ejemplo disponible en <a target="_blank" href="https://github.com/voodmania/pycones2019-demo">https://github.com/voodmania/pycones2019-demo</a></p>
         </section>
 			</div>
 		</div>
@@ -332,7 +332,8 @@ async def signup(request):
 				controls: false,
 				progress: true,
 				history: true,
-				center: true,
+        center: true,
+        pdfSeparateFragments: false,
 
 				transition: 'slide', // none/fade/slide/convex/concave/zoom
 
